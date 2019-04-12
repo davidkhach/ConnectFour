@@ -25,27 +25,61 @@ def createGrid():
 	pygame.draw.rect(screen, (0,0,255), [width-270,0,line_width, height-70])
 	running = True
 	welcomeMessage(screen, width,height)
+	game = startGame()
+	pos = None
+	for column in range(0+margin,720,w+margin):
+		for row in range(0+margin,840,h+margin):
+			pygame.draw.circle(screen, (255,255,255), (row +70, column + 80), 60, 0)
 	while running:
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				running = False
-		for column in range(0+margin,720,w+margin):
-			for row in range(0+margin,840,h+margin):
-				pygame.draw.circle(screen, (255,255,255), (row +70, column + 80), 60, 0)
-		#dropDisk(screen, 0,0, (255,0,0))
-		#dropDisk(screen, 1,0, (255,255,0))
-		#dropDisk(screen, 2,0, (255,0,0))
-		#dropDisk(screen, 3,0, (255,255,0))
-		#dropDisk(screen, 0,1, (255,255,0))
-		#dropDisk(screen, 0,2, (255,0,0))
-		#displayCurrentTurn(screen, "R")
-		displayCurrentTurn(screen, "Y")
+			elif event.type == pygame.MOUSEBUTTONUP:
+				pos = pygame.mouse.get_pos()
+
+		turn = game.currentTurn()
+		color = None
+		if (turn == "R"):
+			color = (255, 0, 0)
+		else:
+			color = (255, 255, 0)
+		if (pos != None):
+			columnChoice = evaluateChoiceByMouseClick(pos)
+			coordinates = game.makeMove(columnChoice+1, turn)
+			dropDisk(screen, coordinates[0], columnChoice, color)
+			#if (game.checkWin(turn)):
+			#	running = False;
+			pos = None
+
+				# x goes from 22 to 136 for first column, + 130 to 22 and 136 for next column, Y ranges from: 21 to 800
+		
+		displayCurrentTurn(screen, turn)
+		#displayCurrentTurn(screen, "Y")
 
 		pygame.display.flip()
 
+
+def startGame():
+	playGame = connectfour.ConnectFour()
+	playGame.createBoard()
+	return playGame
+
+
+
+
+def evaluateChoiceByMouseClick(position):
+	columnToDrop = None
+	pixelToColumn = {0: [22, 136], 1: [152, 266], 2: [282, 396], 3: [412, 526], 4: [542, 656], 5: [672, 786], 6: [802, 916]}
+	xpos = position[0]
+	ypos = position[1]
+	if (ypos < 801 and ypos > 15):
+		for (key, value) in pixelToColumn.items():
+			if (xpos > value[0] and xpos < value[1]):
+				columnToDrop = key
+				return columnToDrop
+
+	
 def dropDisk(screen, row, column, color):
-	#if (row == 1 or column == 1):
-	#	pygame.draw.circle(screen,(255,0,0), (10 + 70, 10 + 80), 60, 0)
 	pygame.draw.circle(screen, color, ((column*130) + 80, (row *130)+90), 60, 0)	
 
 def displayCurrentTurn(screen, turn):

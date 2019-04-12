@@ -32,14 +32,14 @@ def createGrid():
 		for column in range(0+margin,720,w+margin):
 			for row in range(0+margin,840,h+margin):
 				pygame.draw.circle(screen, (255,255,255), (row +70, column + 80), 60, 0)
-				dropDisk(screen, 0,0, (255,0,0))
-				dropDisk(screen, 1,0, (255,255,0))
-				dropDisk(screen, 2,0, (255,0,0))
-				dropDisk(screen, 3,0, (255,255,0))
-				dropDisk(screen, 0,1, (255,255,0))
-				dropDisk(screen, 0,2, (255,0,0))
-				dropDisk(screen, 0,3, (255,0,0))
-
+		#dropDisk(screen, 0,0, (255,0,0))
+		#dropDisk(screen, 1,0, (255,255,0))
+		#dropDisk(screen, 2,0, (255,0,0))
+		#dropDisk(screen, 3,0, (255,255,0))
+		#dropDisk(screen, 0,1, (255,255,0))
+		#dropDisk(screen, 0,2, (255,0,0))
+		#displayCurrentTurn(screen, "R")
+		displayCurrentTurn(screen, "Y")
 
 		pygame.display.flip()
 
@@ -47,6 +47,20 @@ def dropDisk(screen, row, column, color):
 	#if (row == 1 or column == 1):
 	#	pygame.draw.circle(screen,(255,0,0), (10 + 70, 10 + 80), 60, 0)
 	pygame.draw.circle(screen, color, ((column*130) + 80, (row *130)+90), 60, 0)	
+
+def displayCurrentTurn(screen, turn):
+	pygame.font.init()
+	largeText = pygame.font.Font(pygame.font.get_default_font(), 23)
+	TextSurf, TextRect = text_objects("Current Player's Turn", largeText)
+	TextRect.center = ((1070),(600))
+	screen.blit(TextSurf, TextRect)
+	pygame.draw.circle(screen, (0, 0, 0), (1070, 700), 60, 10)
+
+	if (turn == "R"):
+		pygame.draw.circle(screen, (255, 0, 0), (1070, 700), 55, 0)
+	else:
+		pygame.draw.circle(screen, (255, 255, 0), (1070, 700), 55, 0)
+	pygame.display.update()
 
 def text_objects(text, font):
     textSurface = font.render(text, True, (0,0,0))

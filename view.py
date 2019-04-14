@@ -45,16 +45,25 @@ def createGrid():
 			color = (255, 255, 0)
 		if (pos != None):
 			columnChoice = evaluateChoiceByMouseClick(pos)
-			coordinates = game.makeMove(columnChoice+1, turn)
-			dropDisk(screen, coordinates[0], columnChoice, color)
-			#if (game.checkWin(turn)):
-			#	running = False;
-			pos = None
+			if (columnChoice != None):
+				coordinates = game.makeMove(columnChoice+1, turn)
+				if (coordinates != None):
+					dropDisk(screen, coordinates[0], columnChoice, color)
+					pos = None
+		if (game.checkWin(turn)):
+
+			displayWinnerMessage(screen, turn)
+			quit = False
+			while (quit == False):
+				for event in pygame.event.get():
+					if event.type == pygame.QUIT:
+						quit = True
+			running = False
 
 				# x goes from 22 to 136 for first column, + 130 to 22 and 136 for next column, Y ranges from: 21 to 800
 		
 		displayCurrentTurn(screen, turn)
-		#displayCurrentTurn(screen, "Y")
+
 
 		pygame.display.flip()
 
@@ -65,6 +74,18 @@ def startGame():
 	return playGame
 
 
+def displayWinnerMessage(screen, turn):
+	if (turn == "R"):
+		winner = "Red Player"
+	else:
+		winner = "Yellow Player"
+	pygame.font.init()
+	largeText = pygame.font.Font(pygame.font.get_default_font(), 48)
+	TextSurf, TextRect = text_objects("Game Over! " + winner + " Wins!", largeText)
+	pygame.display.set_caption("Game Over! " + winner + " Wins!")
+	TextRect.center = ((600),(862))
+	screen.blit(TextSurf, TextRect)
+	pygame.display.update()
 
 
 def evaluateChoiceByMouseClick(position):

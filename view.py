@@ -39,6 +39,8 @@ def createGrid():
 
 		turn = game.currentTurn()
 		color = None
+		clock = pygame.time.Clock()
+		
 		if (turn == "R"):
 			color = (255, 0, 0)
 		else:
@@ -48,6 +50,13 @@ def createGrid():
 			if (columnChoice != None):
 				coordinates = game.makeMove(columnChoice+1, turn)
 				if (coordinates != None):
+					count = 0
+					while (count != coordinates[0] + 1):
+						clock.tick(6)
+						dropDisk(screen, count, columnChoice, color)
+						pygame.display.flip()
+						dropDisk(screen, count, columnChoice, (255,255,255))
+						count+=1
 					dropDisk(screen, coordinates[0], columnChoice, color)
 					pos = None
 		if (game.checkWin(turn)):

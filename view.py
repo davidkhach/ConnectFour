@@ -1,5 +1,6 @@
 import pygame
 import connectfour
+import easyai
 
 #pygame.draw.rect(screen,(255,255,255),[column,row,w,h])
 def createGrid():
@@ -27,6 +28,7 @@ def createGrid():
 	welcomeMessage(screen, width,height)
 	game = startGame()
 	pos = None
+	ai = easyai.EasyAI((255,0,0), game)
 	for column in range(0+margin,720,w+margin):
 		for row in range(0+margin,840,h+margin):
 			pygame.draw.circle(screen, (255,255,255), (row +70, column + 80), 60, 0)
@@ -40,24 +42,29 @@ def createGrid():
 		turn = game.currentTurn()
 		color = None
 		clock = pygame.time.Clock()
+
+		
+
+
 		
 		if (turn == "R"):
 			color = (255, 0, 0)
+			move = ai.chooseMove()
+			coordinates = game.makeMove(move+1, turn)
+
+			dropDiskSlowly(screen, move, color,coordinates, clock)
+
+
 		else:
 			color = (255, 255, 0)
 		if (pos != None):
 			columnChoice = evaluateChoiceByMouseClick(pos)
+			print ("Player Column choice: " + str(columnChoice))
 			if (columnChoice != None):
 				coordinates = game.makeMove(columnChoice+1, turn)
+
 				if (coordinates != None):
-					count = 0
-					while (count != coordinates[0] + 1):
-						clock.tick(6)
-						dropDisk(screen, count, columnChoice, color)
-						pygame.display.flip()
-						dropDisk(screen, count, columnChoice, (255,255,255))
-						count+=1
-					dropDisk(screen, coordinates[0], columnChoice, color)
+					dropDiskSlowly(screen, columnChoice, color, coordinates, clock)
 					pos = None
 		if (game.checkWin(turn)):
 
@@ -110,7 +117,17 @@ def evaluateChoiceByMouseClick(position):
 
 	
 def dropDisk(screen, row, column, color):
-	pygame.draw.circle(screen, color, ((column*130) + 80, (row *130)+90), 60, 0)	
+	pygame.draw.circle(screen, color, ((column*130) + 80, (row *130)+90), 60, 0)
+
+def dropDiskSlowly(screen, columnChoice, color, coordinates, clock):
+	count = 0
+	while (count != coordinates[0] + 1):
+		clock.tick(6)
+		dropDisk(screen, count, columnChoice, color)
+		pygame.display.flip()
+		dropDisk(screen, count, columnChoice, (255,255,255))
+		count+=1
+	dropDisk(screen, coordinates[0], columnChoice, color)	
 
 def displayCurrentTurn(screen, turn):
 	pygame.font.init()

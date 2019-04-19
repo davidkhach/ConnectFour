@@ -5,7 +5,7 @@ class ConnectFour():
 		self.columns = 7
 		self.game_over = False
 		self.diskCount = 0
-		self.currentPlayer = ""
+		self.currentPlayer = "R"
 
 	def createBoard(self):
 		for r in range(self.rows):
@@ -13,18 +13,37 @@ class ConnectFour():
 			for c in range(self.columns):
 				self.board[r].append("E")
 
+	def returnBoard(self):
+		return self.board
+	def swapBoard(self, anotherBoard):
+		self.board = anotherBoard
+
 	def printBoard(self):
 		for r in range(self.rows):
 			print(self.board[r])
+
+	def checkDiskCount():
+		return self.diskCount
+
+	def checkGameOver():
+		return self.game_over
+
+	def currentTurn(self):
+		return self.currentPlayer
 
 	def makeMove(self, column, turn):
 		if (self.isValid(column)):
 			locationCoord = self.findPlace(column)
 			self.board[locationCoord[0]][locationCoord[1]] = turn
 			self.diskCount+=1
+			if self.currentPlayer == "Y":
+				self.currentPlayer = "R"
+			else:
+				self.currentPlayer = "Y"
 			return locationCoord
 		else:
-			raise IncorrectMove("Please select a valid column to drop your disc")
+			return None
+			#raise IncorrectMove("Please select a valid column to drop your disc")
 
 	def findPlace(self, column):
 		for i in range(self.rows-1, -1 , -1):
@@ -97,7 +116,6 @@ class ConnectFour():
 
 	def checkDiagonalBottomToTop(self, turn):
 		for r in range(self.rows-1, 2, -1):
-			print (r)
 			for c in range(self.columns-3):
 				if (self.board[r][c] == turn and self.board[r-1][c+1] == turn and self.board[r-2][c+2] == turn and self.board[r-3][c+3] == turn):
 					return True
@@ -113,9 +131,3 @@ class ConnectFour():
 
 class IncorrectMove(Exception):
 	pass
-
-if __name__ == '__main__':
-	runGame = ConnectFour()
-	runGame.createBoard()
-	runGame.playConsoleGame()
-

@@ -2,6 +2,7 @@ import pygame
 import connectfour
 import easyai
 
+
 #pygame.draw.rect(screen,(255,255,255),[column,row,w,h])
 def createGrid():
 	background_colour = (0,0,0)
@@ -48,9 +49,11 @@ def createGrid():
 
 		
 		if (turn == "R"):
+			displayCurrentTurn(screen, turn)
 			color = (255, 0, 0)
 			move = ai.chooseMove()
 			coordinates = game.makeMove(move+1, turn)
+
 
 			dropDiskSlowly(screen, move, color,coordinates, clock)
 

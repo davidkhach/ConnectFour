@@ -14,7 +14,7 @@ class EasyAI():
 		return result
 		
 
-	def search(self, gameState, depth, turn):
+	def search(self, depth):
 		pass
-	def evaluate(self, gameState, turn):
+	def evaluate(self):
 		pass

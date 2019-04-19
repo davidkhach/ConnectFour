@@ -43,6 +43,8 @@ def createGrid():
 		turn = game.currentTurn()
 		color = None
 		clock = pygame.time.Clock()
+		if (game.checkDiskCount() == 42):
+			displayWinnerMessage(screen, "draw")
 
 		
 
@@ -100,8 +102,12 @@ def displayWinnerMessage(screen, turn):
 		winner = "Yellow Player"
 	pygame.font.init()
 	largeText = pygame.font.Font(pygame.font.get_default_font(), 48)
-	TextSurf, TextRect = text_objects("Game Over! " + winner + " Wins!", largeText)
-	pygame.display.set_caption("Game Over! " + winner + " Wins!")
+	if (turn != "draw"):
+		TextSurf, TextRect = text_objects("Game Over! " + winner + " Wins!", largeText)
+		pygame.display.set_caption("Game Over! " + winner + " Wins!")
+	else:
+		TextSurf, TextRect = text_objects("Game Over! (Draw) No One Wins!", largeText)
+		pygame.display.set_caption("Game Over! (Draw) No One Wins!")
 	TextRect.center = ((600),(862))
 	screen.blit(TextSurf, TextRect)
 	pygame.display.update()

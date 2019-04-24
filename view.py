@@ -1,9 +1,50 @@
 import pygame
 import connectfour
 import easyai
-
+import mediumai
 
 #pygame.draw.rect(screen,(255,255,255),[column,row,w,h])
+def displayStartScreen():
+	background_colour = (255,255,255)
+	(width, height) = (1200, 900)
+	screen = pygame.display.set_mode((width, height))
+	pygame.display.set_caption('Connect Four')
+	screen.fill(background_colour)
+	startMessage(screen, 1200, 900)
+	playHumanButton(screen, 1200, 900)
+	playAIButton(screen, 1200, 900)
+	running = True
+	while running:
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				running = False
+		pygame.display.flip()
+
+def startMessage(screen, display_width, display_height):
+	pygame.font.init()
+	largeText = pygame.font.Font(pygame.font.get_default_font(), 80)
+	TextSurf, TextRect = text_objects("Connect Four", largeText)
+	TextRect.center = ((display_width/2),(display_height-700))
+	screen.blit(TextSurf, TextRect)
+
+	pygame.display.update()
+
+def playHumanButton(screen, display_width, display_height):
+	pygame.font.init()
+	largeText = pygame.font.Font(pygame.font.get_default_font(), 50)
+	TextSurf, TextRect = text_objects("Player vs Player", largeText)
+	TextRect.center = ((display_width-900),(display_height-400))
+	screen.blit(TextSurf, TextRect)
+
+
+def playAIButton(screen, display_width, display_height):
+	pygame.font.init()
+	largeText = pygame.font.Font(pygame.font.get_default_font(), 50)
+	TextSurf, TextRect = text_objects("Player vs AI", largeText)
+	TextRect.center = ((display_width-250),(display_height-400))
+	screen.blit(TextSurf, TextRect)
+
+
 def createGrid():
 	background_colour = (0,0,0)
 	(width, height) = (1200, 900)
@@ -30,6 +71,7 @@ def createGrid():
 	game = startGame()
 	pos = None
 	ai = easyai.EasyAI((255,0,0), game)
+	#ai = mediumai.MediumAI("R", game)
 	for column in range(0+margin,720,w+margin):
 		for row in range(0+margin,840,h+margin):
 			pygame.draw.circle(screen, (255,255,255), (row +70, column + 80), 60, 0)
@@ -51,10 +93,14 @@ def createGrid():
 
 		
 		if (turn == "R"):
+			#ai.setBoard(game.returnBoard())
+			ai.setBoard(game)
 			displayCurrentTurn(screen, turn)
 			color = (255, 0, 0)
 			move = ai.chooseMove()
+	
 			coordinates = game.makeMove(move+1, turn)
+
 
 
 			dropDiskSlowly(screen, move, color,coordinates, clock)
@@ -64,7 +110,6 @@ def createGrid():
 			color = (255, 255, 0)
 		if (pos != None):
 			columnChoice = evaluateChoiceByMouseClick(pos)
-			print ("Player Column choice: " + str(columnChoice))
 			if (columnChoice != None):
 				coordinates = game.makeMove(columnChoice+1, turn)
 
@@ -168,3 +213,4 @@ def welcomeMessage(screen, display_width, display_height):
 
 
 createGrid()
+#displayStartScreen()

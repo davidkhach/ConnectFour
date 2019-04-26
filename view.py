@@ -66,7 +66,7 @@ def playAIButton(screen, display_width, display_height):
 	screen.blit(TextSurf, TextRect)
 
 def chooseDiskColor():
-	background_colour = (0,100,0)
+	background_colour = (204, 204, 255)
 	(width, height) = (1200, 900)
 	red = (255, 0, 0)
 	yellow = (255, 255, 0)
@@ -79,20 +79,45 @@ def chooseDiskColor():
 
 	pygame.font.init()
 	largeText = pygame.font.Font(pygame.font.get_default_font(), 50)
-	TextSurf, TextRect = text_objects("Choose your color (Red always goes first)", largeText)
+	TextSurf, TextRect = text_objects("Choose your color!", largeText)
+	TextRect.center = ((width/2),(height-800))
+	screen.blit(TextSurf, TextRect)
+
+	largeText = pygame.font.Font(pygame.font.get_default_font(), 40)
+	TextSurf, TextRect = text_objects("(You will always make the first move)", largeText)
 	TextRect.center = ((width/2),(height-700))
 	screen.blit(TextSurf, TextRect)
 
+	pos = None
 	while running:
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				running = False
+			elif event.type == pygame.MOUSEBUTTONUP:
+				pos = pygame.mouse.get_pos()
+
+		if (pos != None):
+			xpos = pos[0]
+			ypos = pos[1]
+			if (xpos > 310 and xpos < 491 and ypos > 310 and ypos < 491):
+				return "R"
+			elif (xpos > 710 and xpos < 890 and ypos > 310 and ypos < 491 ):
+				return "Y"
+			
+
 
 
 		pygame.display.flip()
 
 
-def createGrid(gameMode):
+def createGrid(gameMode, turn):
+	firstTurn = turn
+	if (firstTurn == "R"):
+		firstTurnColor = (255,0,0)
+		secondTurnColor = (255,255,0)
+	else:
+		firstTurnColor = (255,255,0)
+		secondTurnColor = (255,255,0)
 	background_colour = (0,0,0)
 	(width, height) = (1200, 900)
 	screen = pygame.display.set_mode((width, height))
@@ -117,9 +142,11 @@ def createGrid(gameMode):
 	welcomeMessage(screen, width,height)
 	gameTypeMessage(screen, width, height, gameMode)
 	game = startGame()
+	print (firstTurn)
+	game.setTurn(firstTurn)
 	pos = None
 	if (gameMode == "AI"):
-		ai = easyai.EasyAI((255,0,0), game)
+		ai = easyai.EasyAI(secondTurnColor, game)
 	for column in range(0+margin,720,w+margin):
 		for row in range(0+margin,840,h+margin):
 			pygame.draw.circle(screen, (255,255,255), (row +70, column + 80), 60, 0)
@@ -136,13 +163,24 @@ def createGrid(gameMode):
 		if (game.checkDiskCount() == 42):
 			displayWinnerMessage(screen, "draw")
 
-		
-
-
-		
 		if (turn == "R"):
-			#ai.setBoard(game.returnBoard())
 			color = (255, 0, 0)
+		else:
+			color = (255,255,0)
+
+		
+		if (firstTurn == turn):
+			if (pos != None):
+				columnChoice = evaluateChoiceByMouseClick(pos)
+				if (columnChoice != None):
+					coordinates = game.makeMove(columnChoice+1, turn)
+					
+
+					if (coordinates != None):
+						dropDiskSlowly(screen, columnChoice, color, coordinates, clock)
+						pos = None
+		else:
+			#ai.setBoard(game.returnBoard())
 			displayCurrentTurn(screen, turn)
 			if (gameMode == "AI"):
 				ai.setBoard(game)
@@ -155,16 +193,6 @@ def createGrid(gameMode):
 				dropDiskSlowly(screen, move, color,coordinates, clock)
 
 
-		else:
-			color = (255, 255, 0)
-		if (pos != None):
-			columnChoice = evaluateChoiceByMouseClick(pos)
-			if (columnChoice != None):
-				coordinates = game.makeMove(columnChoice+1, turn)
-
-				if (coordinates != None):
-					dropDiskSlowly(screen, columnChoice, color, coordinates, clock)
-					pos = None
 		if (game.checkWin(turn)):
 
 			displayWinnerMessage(screen, turn)
@@ -271,10 +299,10 @@ def welcomeMessage(screen, display_width, display_height):
 
 
 
-#createGrid()
-#result = displayStartScreen()
-#if result == "AI":
-#	createGrid("AI")
-#elif result == "HUMAN":
-#	createGrid("HUMAN")
-chooseDiskColor()
+
+result = displayStartScreen()
+playerChoice = chooseDiskColor()
+if result == "AI":
+	createGrid("AI", playerChoice)
+elif result == "HUMAN":
+	createGrid("HUMAN", playerChoice)

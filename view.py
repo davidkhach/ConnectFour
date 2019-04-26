@@ -5,11 +5,12 @@ import mediumai
 
 #pygame.draw.rect(screen,(255,255,255),[column,row,w,h])
 def displayStartScreen():
-	background_colour = (255,255,255)
+	background_colour = (0,179,0)
 	(width, height) = (1200, 900)
 	screen = pygame.display.set_mode((width, height))
 	pygame.display.set_caption('Connect Four')
 	screen.fill(background_colour)
+	pygame.draw.rect(screen, (102, 204, 255), [0, 0, 1200, 350])
 	pygame.draw.rect(screen, (255,0,0), [70, 450, 450, 100])
 	startMessage(screen, 1200, 900)
 	playHumanButton(screen, 1200, 900)
@@ -63,6 +64,33 @@ def playAIButton(screen, display_width, display_height):
 	TextSurf, TextRect = text_objects("Player vs AI", largeText)
 	TextRect.center = ((display_width-250),(display_height-400))
 	screen.blit(TextSurf, TextRect)
+
+def chooseDiskColor():
+	background_colour = (0,100,0)
+	(width, height) = (1200, 900)
+	red = (255, 0, 0)
+	yellow = (255, 255, 0)
+	screen = pygame.display.set_mode((width, height))
+	pygame.display.set_caption('Choose your color (Red always goes first)')
+	screen.fill(background_colour)
+	pygame.draw.circle(screen, yellow, (800, 400), 90, 0)
+	pygame.draw.circle(screen, red, (400, 400), 90, 0)
+	running = True
+
+	pygame.font.init()
+	largeText = pygame.font.Font(pygame.font.get_default_font(), 50)
+	TextSurf, TextRect = text_objects("Choose your color (Red always goes first)", largeText)
+	TextRect.center = ((width/2),(height-700))
+	screen.blit(TextSurf, TextRect)
+
+	while running:
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				running = False
+
+
+		pygame.display.flip()
+
 
 def createGrid(gameMode):
 	background_colour = (0,0,0)
@@ -151,7 +179,6 @@ def createGrid(gameMode):
 
 
 		pygame.display.flip()
-	return 0
 
 def gameTypeMessage(screen, display_width, display_height, gameType):
 	if (gameType == "HUMAN"):
@@ -245,8 +272,9 @@ def welcomeMessage(screen, display_width, display_height):
 
 
 #createGrid()
-result = displayStartScreen()
-if result == "AI":
-	createGrid("AI")
-else:
-	createGrid("HUMAN")
+#result = displayStartScreen()
+#if result == "AI":
+#	createGrid("AI")
+#elif result == "HUMAN":
+#	createGrid("HUMAN")
+chooseDiskColor()

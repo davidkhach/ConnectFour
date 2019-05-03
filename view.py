@@ -26,7 +26,6 @@ def displayStartScreen():
 		if pos != None:
 			xpos = pos[0]
 			ypos = pos[1]
-			print (pos)
 			if (xpos > 69 and xpos < 519 and ypos > 451 and ypos < 550):
 				return "HUMAN"
 			elif (xpos > 748 and xpos < 1149 and ypos > 451 and ypos < 550):
@@ -142,11 +141,10 @@ def createGrid(gameMode, turn):
 	welcomeMessage(screen, width,height)
 	gameTypeMessage(screen, width, height, gameMode)
 	game = startGame()
-	print (firstTurn)
 	game.setTurn(firstTurn)
 	pos = None
 	if (gameMode == "AI"):
-		ai = easyai.EasyAI(secondTurnColor, game)
+		ai = mediumai.MediumAI(secondTurnColor, game)
 	for column in range(0+margin,720,w+margin):
 		for row in range(0+margin,840,h+margin):
 			pygame.draw.circle(screen, (255,255,255), (row +70, column + 80), 60, 0)
@@ -183,7 +181,7 @@ def createGrid(gameMode, turn):
 			#ai.setBoard(game.returnBoard())
 			displayCurrentTurn(screen, turn)
 			if (gameMode == "AI"):
-				ai.setBoard(game)
+				ai.setBoard(game.returnBoard())
 				move = ai.chooseMove()
 	
 				coordinates = game.makeMove(move+1, turn)

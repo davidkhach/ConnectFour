@@ -1,56 +1,121 @@
 import connectfour
 import easyai
+import random
+import math
 from copy import deepcopy
 
 class MediumAI(easyai.EasyAI):
 
 	def __init__(self, turn, game):
-		self.turn = turn
-		self.game = game
-		self.gameCopy = game
-		self.boardCopy = []
-		if (self.turn == "R"):
-			self.enemyTurn = "Y"
+		if (turn == (255,0,0)):
+			self.turn = "R"
+			self.enemy = "Y"
 		else:
-			self.enemyTurn = "R"
+			self.turn = "Y"
+			self.enemy = "R"
+		self.game = deepcopy(game)
+
+
+	def setBoard(self, board):
+		self.game.swapBoard(board)
 
 
 	def copyBoard(self):
 		self.boardCopy = deepcopy(self.game.returnBoard())
 
 	def chooseMove(self):
-		topScore = -100000
-		chosenMove = None
-		allMoves = self.findAllPotentialMoves()
-		self.gameCopy = connectfour.ConnectFour()
-		self.gameCopy.swapBoard(self.boardCopy)
-		for move in allMoves:
-			self.gameCopy.makeMove(move[1], self.turn)
-			result = self.search(3)
-			if (result > topScore):
-				topScore = result
-				chosenMove = move[1]
-		return chosenMove
+
+		copyOfGame = deepcopy(self.game)
+
+		result = self.search(copyOfGame, 4, True)
+		return result[0]
 
 
-	def search(self, depth):
-		pass
+	def search(self, game, depth, maximizingPlayer):
+		if (depth == 0):
+			return self.evaluate(game)
+		if (maximizingPlayer):
+			value = -math.inf
+			column = None
+			for move in self.findAllPotentialMoves(game):
 
-	def evaluate(self):
+				newState = deepcopy(game)
+				newState.setTurn(self.turn)
+				#print ("Before moving: " + newState.currentTurn())
+				newState.makeMove(move[1] + 1, self.turn)
+				#print ("After moving: " + newState.currentTurn())
+				result = self.search(newState, depth-1, False)[1]
+				print (result)
+				if (result > value):
+					value = result
+					column = move[1]
+			return (column, value)
+		else:
+			value = math.inf
+			column = None
+			for move in self.findAllPotentialMoves(game):
+				self.move = move[1]
+				newState = deepcopy(game)
+				newState.setTurn(self.enemy)
+				#print ("Before moving: " + newState.currentTurn())
+				newState.makeMove(move[1] + 1, self.enemy)
+				#print ("After moving: " + newState.currentTurn())
+				result = self.search(newState, depth-1, True)[1]
+				print (result)
+				if (result < value):
+					value = result
+					column = move[1]
+			return (column, value)
+
+
+
+	def evaluate(self, game):
 		score = 0
-		if (self.gameCopy.checkWin(self.turn)):
-			score += 10000
-		if (self.gameCopy.checkWin(self.enemyTurn)):
-			score -= 10000
+		if (game.checkWin(self.turn)):
+			score += 16000
+		if (game.checkWin(self.enemy)):
+			score -= 15000
+		score += random.choice([1,2,3,4,5,6,7])
+		return (None, score)
+
+	def findAllPotentialMoves(self, game):
+		listOfAllMoves = []
+		for column in range(1,8):
+			if game.isValid(column):
+				listOfAllMoves.append(game.findPlace(column))
+		return listOfAllMoves
+
+"""
+	def chooseMove(self):
+		theTot = -10000
+		theMove = None
+		for move in self.findAllPotentialMoves(self.game):
+			copyOfGame = deepcopy(self.game)
+			copyOfGame.makeMove(move[1]+1, self.turn)
+			result = self.search(copyOfGame)
+			if result > theTot:
+				theTot = result
+				theMove = move[1]
+		return theMove
+
+	def search(self, game):
+		return self.evaluate(game)
+
+
+
+	def evaluate(self, game):
+		if self.turn == "R":
+			opp_player = "Y"
+		else:
+			opp_player = "R"
+		score = 0
+		if (game.checkWin(self.turn)):
+			score += 15000
+		score += random.choice([1,2,3,4,5,6,7])
 		return score
 
 
+"""
 
-	def findAllPotentialMoves(self):
-		listOfAllMoves = []
-		for column in range(1,8):
-			if self.game.isValid(column):
-				listOfAllMoves.append(self.game.findPlace(column))
-		return listOfAllMoves
-			
 
+	

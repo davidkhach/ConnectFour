@@ -45,7 +45,6 @@ class MediumAI(easyai.EasyAI):
 				newState.makeMove(move[1] + 1, self.turn)
 				#print ("After moving: " + newState.currentTurn())
 				result = self.search(newState, depth-1, False)[1]
-				print (result)
 				if (result > value):
 					value = result
 					column = move[1]
@@ -61,7 +60,6 @@ class MediumAI(easyai.EasyAI):
 				newState.makeMove(move[1] + 1, self.enemy)
 				#print ("After moving: " + newState.currentTurn())
 				result = self.search(newState, depth-1, True)[1]
-				print (result)
 				if (result < value):
 					value = result
 					column = move[1]
@@ -72,9 +70,12 @@ class MediumAI(easyai.EasyAI):
 	def evaluate(self, game):
 		score = 0
 		if (game.checkWin(self.turn)):
-			score += 16000
+			score += 15000
 		if (game.checkWin(self.enemy)):
 			score -= 15000
+
+		if (game.checkThreeInARow(self.turn)):
+			score += 2000
 		score += random.choice([1,2,3,4,5,6,7])
 		return (None, score)
 

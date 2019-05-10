@@ -1,5 +1,5 @@
 # ConnectFour Game Class
-# Implemented the logic for dopping the disks in valid columns/rows
+# Implemented the logic for dropping the disks in valid columns/rows
 # Implemented detecting winner if 4-in-a-row of the same disk horizontally/vertically/diagonally.
 # Can play the game in console by calling playConsoleGame() method.
 
@@ -105,12 +105,38 @@ class ConnectFour():
 		print("")
 		print("Game Over! " + winner + " is the winner!")
 
+	def checkThreeInARow(self, turn):
+		return self.checkHorizontal(turn, 3) or self.checkVerticalThree(turn) or self.checkDiagonalTopToBottomThree(turn) or self.checkDiagonalBottomToTopThree(turn)
+
+	def checkVerticalThree(self, turn):
+		safetyCheck = 0
+		for r in range(self.rows):
+			for c in range(self.columns):
+				if (safetyCheck < 2):
+					if (self.board[r][c] == turn and self.board[r+1][c] == turn and self.board[r+2][c]):
+						return True
+			safetyCheck+=1
+		return False
+
+	def checkDiagonalTopToBottomThree(self, turn):
+		for r in range(self.rows-2):
+			for c in range(self.columns-3):
+				if (self.board[r][c] == turn and self.board[r+1][c+1] == turn and self.board[r+2][c+2]):
+					return True
+		return False
+
+	def checkDiagonalBottomToTopThree(self, turn):
+		for r in range(self.rows-1, 1, -1):
+			for c in range(self.columns-3):
+				if (self.board[r][c] == turn and self.board[r-1][c+1] == turn and self.board[r-2][c+2] == turn):
+					return True
+		return False
 
 	def checkWin(self, turn):
 		""" Returns whether a player wins or not """
-		return self.checkHorizontal(turn) or self.checkVertical(turn) or self.checkDiagonalTopToBottom(turn) or self.checkDiagonalBottomToTop(turn)
+		return self.checkHorizontal(turn, 4) or self.checkVertical(turn) or self.checkDiagonalTopToBottom(turn) or self.checkDiagonalBottomToTop(turn)
 
-	def checkHorizontal(self, turn):
+	def checkHorizontal(self, turn, consecutiveNumber):
 		""" Checks if the current player matches 4 in a row horizontally anywhere in the board """
 		for r in self.board:
 			count = 0
@@ -119,7 +145,7 @@ class ConnectFour():
 					count+=1
 				else:
 					count = 0
-				if count == 4:
+				if count == consecutiveNumber:
 					return True
 		return False
 
@@ -150,7 +176,17 @@ class ConnectFour():
 					return True
 		return False
 
+	def testWin(self):
+		""" Function used for testing given specific board situations """
+		if self.checkWin(self.currentPlayer):
+			print ("WIN")
 
+	def makeBoardWinDiagonal(self, row, column, turn):
+		""" Used to test if diagonal winning is working correctly """
+		self.board[row][column] = turn
+		self.board[row-1][column+1] = turn
+		self.board[row-2][column+2] = turn
+		self.board[row-3][column+3] = turn
 
 
 
@@ -161,3 +197,14 @@ class ConnectFour():
 class IncorrectMove(Exception):
 	""" Exception class for invalid moves """
 	pass
+
+#testing = ConnectFour()
+#testing.createBoard()
+#testing.printBoard()
+#current = "R"
+#print ()
+#print ()
+#testing.makeBoardWinDiagonal(3,0, current)
+#testing.printBoard()
+
+#testing.testWin()

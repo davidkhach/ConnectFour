@@ -21,6 +21,7 @@ def displayStartScreen():
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				running = False
+				return "END"
 			elif event.type == pygame.MOUSEBUTTONUP:
 				pos = pygame.mouse.get_pos()
 		if pos != None:
@@ -92,6 +93,7 @@ def chooseDiskColor():
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				running = False
+				return "END"
 			elif event.type == pygame.MOUSEBUTTONUP:
 				pos = pygame.mouse.get_pos()
 
@@ -116,7 +118,7 @@ def createGrid(gameMode, turn):
 		secondTurnColor = (255,255,0)
 	else:
 		firstTurnColor = (255,255,0)
-		secondTurnColor = (255,255,0)
+		secondTurnColor = (255,0,0)
 	background_colour = (0,0,0)
 	(width, height) = (1200, 900)
 	screen = pygame.display.set_mode((width, height))
@@ -156,6 +158,7 @@ def createGrid(gameMode, turn):
 				pos = pygame.mouse.get_pos()
 
 		turn = game.currentTurn()
+		displayCurrentTurn(screen, turn)
 		color = None
 		clock = pygame.time.Clock()
 		if (game.checkDiskCount() == 42):
@@ -168,6 +171,15 @@ def createGrid(gameMode, turn):
 
 		
 		if (firstTurn == turn):
+			#ai2.setBoard(game.returnBoard())
+			#move = ai2.chooseMove()
+	
+			#coordinates = game.makeMove(move+1, turn)
+
+
+
+			#dropDiskSlowly(screen, move, color,coordinates, clock)
+
 			if (pos != None):
 				columnChoice = evaluateChoiceByMouseClick(pos)
 				if (columnChoice != None):
@@ -178,10 +190,9 @@ def createGrid(gameMode, turn):
 						dropDiskSlowly(screen, columnChoice, color, coordinates, clock)
 						pos = None
 		else:
-			#ai.setBoard(game.returnBoard())
+			ai.setBoard(game.returnBoard())
 			displayCurrentTurn(screen, turn)
 			if (gameMode == "AI"):
-				ai.setBoard(game.returnBoard())
 				move = ai.chooseMove()
 	
 				coordinates = game.makeMove(move+1, turn)
@@ -297,10 +308,13 @@ def welcomeMessage(screen, display_width, display_height):
 
 
 
-
-result = displayStartScreen()
-playerChoice = chooseDiskColor()
-if result == "AI":
-	createGrid("AI", playerChoice)
-elif result == "HUMAN":
-	createGrid("HUMAN", playerChoice)
+if __name__ == "__main__":
+	
+	result = displayStartScreen()
+	if (result != "END"):
+		playerChoice = chooseDiskColor()
+		if (playerChoice != "END"):
+			if result == "AI":
+				createGrid("AI", playerChoice)
+			elif result == "HUMAN":
+				createGrid("HUMAN", playerChoice)

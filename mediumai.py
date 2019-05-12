@@ -1,3 +1,10 @@
+# Medium difficulty AI game class implementation
+# Uses minimax recursive algorithm to determine what column to drop disk in
+# Prioritizes making 4 in a row to win and stopping opponent from making 4 in a row
+# Otherwise, tries to make 3 in a row as much as it can, if cannot then it drops disks randomly
+
+
+
 import connectfour
 import easyai
 import random
@@ -14,6 +21,9 @@ class MediumAI(easyai.EasyAI):
 			self.turn = "Y"
 			self.enemy = "R"
 		self.game = deepcopy(game)
+
+	def printTest(self):
+		print("hi") 
 
 
 	def setBoard(self, board):
@@ -70,9 +80,9 @@ class MediumAI(easyai.EasyAI):
 	def evaluate(self, game):
 		score = 0
 		if (game.checkWin(self.turn)):
-			score += 15000
+			score += 20000
 		if (game.checkWin(self.enemy)):
-			score -= 15000
+			score -= 20000
 
 		if (game.checkThreeInARow(self.turn)):
 			score += 2000

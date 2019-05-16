@@ -1,10 +1,17 @@
+# Pygame View of Connect Four
+# Fully functioning GUI, simply follow the directions on screen after running
+# Choosing a column is as simple as clicking anywhere within a column
+# Disks will slowly drop until they land
+
+
 import pygame
 import connectfour
 import easyai
 import mediumai
+import customai
 
-#pygame.draw.rect(screen,(255,255,255),[column,row,w,h])
 def displayStartScreen():
+	""" Displays screen for user to pick game mode, vs AI or vs Human """
 	background_colour = (0,179,0)
 	(width, height) = (1200, 900)
 	screen = pygame.display.set_mode((width, height))
@@ -36,6 +43,7 @@ def displayStartScreen():
 		pygame.display.flip()
 
 def startMessage(screen, display_width, display_height):
+	""" Displays gamemode choice message on screen """
 	pygame.font.init()
 	largeText = pygame.font.Font(pygame.font.get_default_font(), 80)
 	TextSurf, TextRect = text_objects("Connect Four", largeText)
@@ -50,6 +58,7 @@ def startMessage(screen, display_width, display_height):
 	pygame.display.update()
 
 def playHumanButton(screen, display_width, display_height):
+	""" Displays button to click to play against a human """
 	pygame.draw.rect(screen, (0,255,0), [750, 450, 400, 100])
 	pygame.font.init()
 	largeText = pygame.font.Font(pygame.font.get_default_font(), 50)
@@ -59,6 +68,7 @@ def playHumanButton(screen, display_width, display_height):
 
 
 def playAIButton(screen, display_width, display_height):
+	""" Displays button to click to play against an AI """
 	pygame.font.init()
 	largeText = pygame.font.Font(pygame.font.get_default_font(), 50)
 	TextSurf, TextRect = text_objects("Player vs AI", largeText)
@@ -66,6 +76,7 @@ def playAIButton(screen, display_width, display_height):
 	screen.blit(TextSurf, TextRect)
 
 def chooseDiskColor():
+	""" Displays screen for user to pick their disk color by clicking """
 	background_colour = (204, 204, 255)
 	(width, height) = (1200, 900)
 	red = (255, 0, 0)
@@ -104,14 +115,12 @@ def chooseDiskColor():
 				return "R"
 			elif (xpos > 710 and xpos < 890 and ypos > 310 and ypos < 491 ):
 				return "Y"
-			
-
-
 
 		pygame.display.flip()
 
 
 def createGrid(gameMode, turn):
+	""" Displays gamemode and handles the game logic until there is a winner/draw """
 	firstTurn = turn
 	if (firstTurn == "R"):
 		firstTurnColor = (255,0,0)
@@ -218,6 +227,7 @@ def createGrid(gameMode, turn):
 		pygame.display.flip()
 
 def gameTypeMessage(screen, display_width, display_height, gameType):
+	""" Displays which gamemode you are playing """
 	if (gameType == "HUMAN"):
 		result = "Player"
 	else:
@@ -231,12 +241,14 @@ def gameTypeMessage(screen, display_width, display_height, gameType):
 	pygame.display.update()
 
 def startGame():
+	""" Returns a connectfour game object """
 	playGame = connectfour.ConnectFour()
 	playGame.createBoard()
 	return playGame
 
 
 def displayWinnerMessage(screen, turn):
+	""" Displays message showing which player won """
 	if (turn == "R"):
 		winner = "Red Player"
 	else:
@@ -255,6 +267,7 @@ def displayWinnerMessage(screen, turn):
 
 
 def evaluateChoiceByMouseClick(position):
+	""" Calculates which column the human player clicks on and returns the column number """
 	columnToDrop = None
 	pixelToColumn = {0: [22, 136], 1: [152, 266], 2: [282, 396], 3: [412, 526], 4: [542, 656], 5: [672, 786], 6: [802, 916]}
 	xpos = position[0]
@@ -267,9 +280,11 @@ def evaluateChoiceByMouseClick(position):
 
 	
 def dropDisk(screen, row, column, color):
+	""" Drops a disk on specified row and column """
 	pygame.draw.circle(screen, color, ((column*130) + 80, (row *130)+90), 60, 0)
 
 def dropDiskSlowly(screen, columnChoice, color, coordinates, clock):
+	""" Drops the disk slowly from the very top until landing on another disk or bottom of board """
 	count = 0
 	while (count != coordinates[0] + 1):
 		clock.tick(6)
@@ -280,6 +295,7 @@ def dropDiskSlowly(screen, columnChoice, color, coordinates, clock):
 	dropDisk(screen, coordinates[0], columnChoice, color)	
 
 def displayCurrentTurn(screen, turn):
+	""" Displays the current turn color on the right side of the screen """
 	pygame.font.init()
 	largeText = pygame.font.Font(pygame.font.get_default_font(), 23)
 	TextSurf, TextRect = text_objects("Current Player's Turn", largeText)
@@ -294,10 +310,12 @@ def displayCurrentTurn(screen, turn):
 	pygame.display.update()
 
 def text_objects(text, font):
-    textSurface = font.render(text, True, (0,0,0))
-    return textSurface, textSurface.get_rect()
+	""" Creates a text object for displaying messages/text blocks """
+	textSurface = font.render(text, True, (0,0,0))
+	return textSurface, textSurface.get_rect()
 
 def welcomeMessage(screen, display_width, display_height):
+	""" Displays welcome message on screen """
 	pygame.font.init()
 	largeText = pygame.font.Font(pygame.font.get_default_font(), 35)
 	TextSurf, TextRect = text_objects("Connect Four", largeText)

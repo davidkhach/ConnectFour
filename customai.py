@@ -16,6 +16,12 @@ class CustomAI(mediumai.MediumAI):
 	def __init__(self, turn, game):
 		super().__init__(turn, game)
 
+	def chooseMove(self):
+		""" Define your choose move function here to return a valid move. Game helper functions you can consider using: game.isValid(column), check connectfour.py for more details """
+
+		return 0
+
+
 
 	def evaluate(self, game):
 		""" Create your custom evaluation function here, return type must be (None, score) """

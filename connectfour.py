@@ -105,9 +105,12 @@ class ConnectFour():
 		print("")
 		print("Game Over! " + winner + " is the winner!")
 
+	def checkPositionColor(self, row, column, turn):
+		return self.board[row-1][column-1] == turn
+
 	def checkThreeInARow(self, turn):
 		return self.checkHorizontal(turn, 3) or self.checkVerticalThree(turn) or self.checkDiagonalTopToBottomThree(turn) or self.checkDiagonalBottomToTopThree(turn)
-
+	
 	def checkVerticalThree(self, turn):
 		safetyCheck = 0
 		for r in range(self.rows):
@@ -184,9 +187,9 @@ class ConnectFour():
 	def makeBoardWinDiagonal(self, row, column, turn):
 		""" Used to test if diagonal winning is working correctly """
 		self.board[row][column] = turn
-		self.board[row-1][column+1] = turn
-		self.board[row-2][column+2] = turn
-		self.board[row-3][column+3] = turn
+		self.board[row+1][column+1] = turn
+		self.board[row+2][column+2] = turn
+		self.board[row+3][column+3] = turn
 
 
 
@@ -204,7 +207,7 @@ class IncorrectMove(Exception):
 #current = "R"
 #print ()
 #print ()
-#testing.makeBoardWinDiagonal(3,0, current)
+#testing.makeBoardWinDiagonal(2,1, current)
 #testing.printBoard()
 
 #testing.testWin()

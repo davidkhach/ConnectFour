@@ -58,6 +58,8 @@ class MediumAI(easyai.EasyAI):
 				if (result > value):
 					value = result
 					column = move[1]
+					if (result > 19999):
+						return (column, value)
 			return (column, value)
 		else:
 			value = math.inf
@@ -73,6 +75,8 @@ class MediumAI(easyai.EasyAI):
 				if (result < value):
 					value = result
 					column = move[1]
+					if (result < -19999):
+						return (column, value)
 			return (column, value)
 
 
@@ -86,6 +90,12 @@ class MediumAI(easyai.EasyAI):
 
 		if (game.checkThreeInARow(self.turn)):
 			score += 2000
+		if game.checkPositionColor(1,1,self.turn):
+			score += 40
+		if game.checkPositionColor(1,1,self.enemy):
+			score -= 40
+		if (game.checkThreeInARow(self.enemy)):
+			score -= 2000
 		score += random.choice([1,2,3,4,5,6,7])
 		return (None, score)
 

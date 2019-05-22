@@ -82,7 +82,7 @@ def chooseDiskColor():
 	red = (255, 0, 0)
 	yellow = (255, 255, 0)
 	screen = pygame.display.set_mode((width, height))
-	pygame.display.set_caption('Choose your color (Red always goes first)')
+	pygame.display.set_caption('Choose your color (You always goes first!)')
 	screen.fill(background_colour)
 	pygame.draw.circle(screen, yellow, (800, 400), 90, 0)
 	pygame.draw.circle(screen, red, (400, 400), 90, 0)

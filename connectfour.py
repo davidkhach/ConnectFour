@@ -201,13 +201,3 @@ class IncorrectMove(Exception):
 	""" Exception class for invalid moves """
 	pass
 
-#testing = ConnectFour()
-#testing.createBoard()
-#testing.printBoard()
-#current = "R"
-#print ()
-#print ()
-#testing.makeBoardWinDiagonal(2,1, current)
-#testing.printBoard()
-
-#testing.testWin()

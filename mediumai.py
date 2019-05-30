@@ -91,8 +91,10 @@ class MediumAI(easyai.EasyAI):
 		if (game.checkThreeInARow(self.turn)):
 			score += 2000
 		if game.checkPositionColor(1,1,self.turn):
+			print ("True, AI")
 			score += 40
 		if game.checkPositionColor(1,1,self.enemy):
+			print ("True, PLAYER")
 			score -= 40
 		if (game.checkThreeInARow(self.enemy)):
 			score -= 2000
@@ -105,38 +107,3 @@ class MediumAI(easyai.EasyAI):
 			if game.isValid(column):
 				listOfAllMoves.append(game.findPlace(column))
 		return listOfAllMoves
-
-"""
-	def chooseMove(self):
-		theTot = -10000
-		theMove = None
-		for move in self.findAllPotentialMoves(self.game):
-			copyOfGame = deepcopy(self.game)
-			copyOfGame.makeMove(move[1]+1, self.turn)
-			result = self.search(copyOfGame)
-			if result > theTot:
-				theTot = result
-				theMove = move[1]
-		return theMove
-
-	def search(self, game):
-		return self.evaluate(game)
-
-
-
-	def evaluate(self, game):
-		if self.turn == "R":
-			opp_player = "Y"
-		else:
-			opp_player = "R"
-		score = 0
-		if (game.checkWin(self.turn)):
-			score += 15000
-		score += random.choice([1,2,3,4,5,6,7])
-		return score
-
-
-"""
-
-
-	

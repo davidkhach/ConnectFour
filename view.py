@@ -57,6 +57,18 @@ def startMessage(screen, display_width, display_height):
 
 	pygame.display.update()
 
+def displayAIDifficultyScreen():
+	""" Displays three buttons of AI difficulties """
+	background_colour = (0,179,0)
+	(width, height) = (1200, 900)
+	screen = pygame.display.set_mode((width, height))
+	pygame.display.set_caption('Choose the AIs Difficulty!')
+	screen.fill(background_colour)
+	pygame.draw.rect(screen, (102, 204, 255), [0, 0, 1200, 350])
+	pygame.draw.rect(screen, (255,0,0), [70, 450, 450, 100])
+
+	# To be completed
+
 def playHumanButton(screen, display_width, display_height):
 	""" Displays button to click to play against a human """
 	pygame.draw.rect(screen, (0,255,0), [750, 450, 400, 100])

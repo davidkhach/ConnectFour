@@ -58,7 +58,7 @@ def startMessage(screen, display_width, display_height):
 	pygame.display.update()
 
 def displayAIDifficultyScreen():
-	""" Displays three buttons of AI difficulties """
+	""" Displays three buttons for AI difficulties """
 	background_colour = (0,179,0)
 	(width, height) = (1200, 900)
 	screen = pygame.display.set_mode((width, height))

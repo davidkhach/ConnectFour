@@ -66,8 +66,18 @@ def displayAIDifficultyScreen():
 	screen.fill(background_colour)
 	pygame.draw.rect(screen, (102, 204, 255), [0, 0, 1200, 350])
 	pygame.draw.rect(screen, (255,0,0), [70, 450, 450, 100])
+	pygame.draw.rect(screen, (255,0,0), [70, 450, 450, 100])
 
 	# To be completed
+
+def displayDifficultyOnButton(difficulty, x, y):
+	pygame.font.init()
+	largeText = pygame.font.Font(pygame.font.get_default_font(), 50)
+	TextSurf, TextRect = text_objects(difficulty, largeText)
+	TextRect.center = ((display_width-x),(display_height-y))
+	screen.blit(TextSurf, TextRect)
+
+
 
 def playHumanButton(screen, display_width, display_height):
 	""" Displays button to click to play against a human """

@@ -84,18 +84,18 @@ class MediumAI(easyai.EasyAI):
 	def evaluate(self, game):
 		score = 0
 		if (game.checkWin(self.turn)):
-			score += 20000
+			score += 21000
 		if (game.checkWin(self.enemy)):
 			score -= 20000
 
 		if (game.checkThreeInARow(self.turn)):
 			score += 2000
-		if game.checkPositionColor(1,1,self.turn):
-			print ("True, AI")
-			score += 40
-		if game.checkPositionColor(1,1,self.enemy):
-			print ("True, PLAYER")
-			score -= 40
+		#if game.checkPositionColor(1,1,self.turn):
+		#	print ("True, AI")
+		#	score += 40
+		#if game.checkPositionColor(1,1,self.enemy):
+		#	print ("True, PLAYER")
+		#	score -= 40
 		if (game.checkThreeInARow(self.enemy)):
 			score -= 2000
 		score += random.choice([1,2,3,4,5,6,7])

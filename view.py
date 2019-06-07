@@ -9,6 +9,7 @@ import connectfour
 import easyai
 import mediumai
 import customai
+import time
 
 def displayStartScreen():
 	""" Displays screen for user to pick game mode, vs AI or vs Human """
@@ -62,15 +63,37 @@ def displayAIDifficultyScreen():
 	background_colour = (0,179,0)
 	(width, height) = (1200, 900)
 	screen = pygame.display.set_mode((width, height))
-	pygame.display.set_caption('Choose the AIs Difficulty!')
 	screen.fill(background_colour)
-	pygame.draw.rect(screen, (102, 204, 255), [0, 0, 1200, 350])
-	pygame.draw.rect(screen, (255,0,0), [70, 450, 450, 100])
-	pygame.draw.rect(screen, (255,0,0), [70, 450, 450, 100])
+	pygame.display.set_caption('Choose the AIs Difficulty!')
+	displayAIText(screen, 1200, 900)
+	#pygame.draw.rect(screen, (102, 204, 255), [0, 0, 1200, 350])
+	pygame.draw.rect(screen, (255,0,0), [100, 450, 280, 100])
+	pygame.draw.rect(screen, (255,0,0), [460, 650, 280, 100])
+	pygame.draw.rect(screen, (255,0,0), [850, 450, 280, 100])
+	displayDifficultyOnButton(screen, "Easy", 1200, 900, 960, 400)
+	displayDifficultyOnButton(screen, "Medium", 1200, 900, 960, 400)
+	displayDifficultyOnButton(screen, "Hard (Coming soon!)", 1200, 900, 960, 400)
+	running = True
+	while running:
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				running = False
+				return "END"
+			elif event.type == pygame.MOUSEBUTTONUP:
+				pos = pygame.mouse.get_pos()
+				print (pos)
+
+		pygame.display.flip()
 
 	# To be completed
+def displayAIText(screen, display_width, display_height):
+	pygame.font.init()
+	largeText = pygame.font.Font(pygame.font.get_default_font(), 80)
+	TextSurf, TextRect = text_objects("Choose the AIs Difficulty", largeText)
+	TextRect.center = ((display_width/2),(display_height-700))
+	screen.blit(TextSurf, TextRect)
 
-def displayDifficultyOnButton(difficulty, x, y):
+def displayDifficultyOnButton(screen, difficulty, display_width, display_height, x, y):
 	pygame.font.init()
 	largeText = pygame.font.Font(pygame.font.get_default_font(), 50)
 	TextSurf, TextRect = text_objects(difficulty, largeText)
@@ -350,6 +373,7 @@ def welcomeMessage(screen, display_width, display_height):
 
 if __name__ == "__main__":
 	
+	#result = displayAIDifficultyScreen()
 	result = displayStartScreen()
 	if (result != "END"):
 		playerChoice = chooseDiskColor()

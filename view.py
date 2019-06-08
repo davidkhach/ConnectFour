@@ -60,19 +60,25 @@ def startMessage(screen, display_width, display_height):
 
 def displayAIDifficultyScreen():
 	""" Displays three buttons for AI difficulties """
-	background_colour = (0,179,0)
+	background_colour = (175,2,255)
 	(width, height) = (1200, 900)
 	screen = pygame.display.set_mode((width, height))
 	screen.fill(background_colour)
 	pygame.display.set_caption('Choose the AIs Difficulty!')
+	pygame.draw.rect(screen, (58,175,103), [50, 150, 1100, 100])
 	displayAIText(screen, 1200, 900)
 	#pygame.draw.rect(screen, (102, 204, 255), [0, 0, 1200, 350])
-	pygame.draw.rect(screen, (255,0,0), [100, 450, 280, 100])
+	pygame.draw.rect(screen, (255,250,2), [100, 450, 280, 100])
 	pygame.draw.rect(screen, (255,0,0), [460, 650, 280, 100])
-	pygame.draw.rect(screen, (255,0,0), [850, 450, 280, 100])
+	pygame.draw.rect(screen, (255,150,2), [850, 450, 280, 100])
 	displayDifficultyOnButton(screen, "Easy", 1200, 900, 960, 400)
-	displayDifficultyOnButton(screen, "Medium", 1200, 900, 960, 400)
-	displayDifficultyOnButton(screen, "Hard (Coming soon!)", 1200, 900, 960, 400)
+	displayDifficultyOnButton(screen, "Medium", 1200, 900, 200, 400)
+	displayDifficultyOnButton(screen, "Hard", 1200, 900, 600, 200)
+	pygame.font.init()
+	largeText = pygame.font.Font(pygame.font.get_default_font(), 20)
+	TextSurf, TextRect = text_objects("(Coming Soon)", largeText)
+	TextRect.center = ((width/2),(height-165))
+	screen.blit(TextSurf, TextRect)
 	running = True
 	while running:
 		for event in pygame.event.get():
@@ -374,6 +380,7 @@ def welcomeMessage(screen, display_width, display_height):
 if __name__ == "__main__":
 	
 	#result = displayAIDifficultyScreen()
+
 	result = displayStartScreen()
 	if (result != "END"):
 		playerChoice = chooseDiskColor()

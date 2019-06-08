@@ -20,7 +20,7 @@ Current Features:
 
 Future plan: 
 - Allowing users to play against different difficulties of AI ranging from easy to hard (In Progress)
-- Allowing users to easily pick which difficulty AI they want to play against (Not Completed)
+- Allowing users to easily pick which difficulty AI they want to play against (In Progress)
 - Optimizing code to run more efficiently for determining whether there is a win or not (Not Completed)
 
 

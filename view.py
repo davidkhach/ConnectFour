@@ -87,7 +87,13 @@ def displayAIDifficultyScreen():
 				return "END"
 			elif event.type == pygame.MOUSEBUTTONUP:
 				pos = pygame.mouse.get_pos()
-				print (pos)
+				if pos != None:
+					xpos = pos[0]
+					ypos = pos[1]
+					if (xpos > 99 and xpos < 379 and ypos > 449 and ypos < 551):
+						return "EASY"
+					elif (xpos > 849 and xpos < 1131 and ypos > 449 and ypos < 551):
+						return "MEDIUM"
 
 		pygame.display.flip()
 
@@ -170,7 +176,7 @@ def chooseDiskColor():
 		pygame.display.flip()
 
 
-def createGrid(gameMode, turn):
+def createGrid(gameMode, turn, difficulty):
 	""" Displays gamemode and handles the game logic until there is a winner/draw """
 	firstTurn = turn
 	if (firstTurn == "R"):
@@ -206,7 +212,10 @@ def createGrid(gameMode, turn):
 	game.setTurn(firstTurn)
 	pos = None
 	if (gameMode == "AI"):
-		ai = mediumai.MediumAI(secondTurnColor, game)
+		if (difficulty == "MEDIUM"):
+			ai = mediumai.MediumAI(secondTurnColor, game)
+		elif (difficulty == "EASY"):
+			ai = easyai.EasyAI(secondTurnColor, game)
 	for column in range(0+margin,720,w+margin):
 		for row in range(0+margin,840,h+margin):
 			pygame.draw.circle(screen, (255,255,255), (row +70, column + 80), 60, 0)
@@ -231,14 +240,6 @@ def createGrid(gameMode, turn):
 
 		
 		if (firstTurn == turn):
-			#ai2.setBoard(game.returnBoard())
-			#move = ai2.chooseMove()
-	
-			#coordinates = game.makeMove(move+1, turn)
-
-
-
-			#dropDiskSlowly(screen, move, color,coordinates, clock)
 
 			if (pos != None):
 				columnChoice = evaluateChoiceByMouseClick(pos)
@@ -379,13 +380,13 @@ def welcomeMessage(screen, display_width, display_height):
 
 if __name__ == "__main__":
 	
-	#result = displayAIDifficultyScreen()
-
 	result = displayStartScreen()
 	if (result != "END"):
 		playerChoice = chooseDiskColor()
 		if (playerChoice != "END"):
 			if result == "AI":
-				createGrid("AI", playerChoice)
+				difficulty = displayAIDifficultyScreen()
+				if (difficulty != "END"):
+					createGrid("AI", playerChoice, difficulty)
 			elif result == "HUMAN":
-				createGrid("HUMAN", playerChoice)
+				createGrid("HUMAN", playerChoice, None)

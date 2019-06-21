@@ -10,6 +10,8 @@ How to run and play?
 To play the game, run view.py and follow the directions on the various screens (Must have Pygame installed).
 
 ![Alt Text](https://media.giphy.com/media/Y4cSYZKryW9JNsJMEz/giphy.gif)
+(This gif shows human vs AI gameplay)
+
 
 Current Features:
 - Easy to use GUI, players simply have to click anywhere within a column to drop a disk.
